@@ -1,41 +1,49 @@
 class Solution {
 public:
-    int minimumEffortPath(vector<vector<int>>& heights) {
-        //dijkstra algo but effort will be max(curreffort,difference in coordinates)
-        //we will use set
-        set<pair<int,vector<int>>> st;
+    bool isValid( vector<vector<int>> &heights,int mx)
+    {
+        int dx[4] = {0,0,-1,1};
+        int dy[4] = {1,-1,0,0}; 
         int n = heights.size();
         int m = heights[0].size(); 
-        vector<vector<int>> dist(n,vector<int>(m,1e9));
-        dist[0][0] = 0;
-        int dx[4] = {0,0,-1,1};
-        int dy[4] = {1,-1,0,0};
-        st.insert({0,{0,0}});
-        while(!st.empty())
+        queue<pair<int,int>> q;
+        q.push({0,0});
+        vector<vector<int>> vis(n,vector<int>(m,0));
+        vis[0][0] = 1;
+        while(!q.empty())
         {
-            auto temp = (*st.begin());
-            int x = temp.second[0];
-            int y = temp.second[1];
-            int currEffort = temp.first;
-            if(x == n-1 and y == m-1)
-            {
-                return currEffort;
-            }
-            st.erase(st.begin());
+            int x = q.front().first;
+            int y = q.front().second;
+            q.pop();
+            if(x == n-1 and y == m-1)return true;
             for(int i=0;i<4;i++){
-                int newX = x+dx[i];
-                int newY = y+dy[i];
-                if(newX>=0 and newY>=0 and newX<n and newY<m)
+                 int newX = x+dx[i],newY = y+dy[i];
+                if(newX>=0 and newY>=0 and newX < n and newY < m and !vis[newX][newY])
                 {
-                    int newEffort = max(currEffort,abs(heights[x][y] - heights[newX][newY]));
-                    if(newEffort < dist[newX][newY])
+                    if( abs(heights[x][y] - heights[newX][newY])<=mx)
                     {
-                        dist[newX][newY] = newEffort;
-                        st.insert({newEffort,{newX,newY}});
+                        vis[newX][newY] = 1;
+                        q.push({newX,newY});
                     }
                 }
             }
         }
-        return -1;
+        return false;
+    }
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int s = 0,e = 1e6,ans = 1e6;
+        while(s<=e)
+        {
+            int mid = s+(e-s)/2;
+            if(isValid(heights,mid) == true)
+            {
+                ans = mid,ans;
+                e=mid-1;
+            }
+            else{
+                s=mid+1;
+            }
+        }
+        return ans;
     }
 };
