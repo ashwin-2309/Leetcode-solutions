@@ -11,17 +11,12 @@
  */
 class Solution {
 public:
-    int height(TreeNode* root)
+    int maxDepth(TreeNode* root)
     {
         if(root==NULL)return 0;
-        int leftHeight = height(root->left);
-        int rightHeight = height(root->right);
+        int leftHeight = maxDepth(root->left);
+        int rightHeight = maxDepth(root->right);
         return 1+max(leftHeight,rightHeight);
         
-    }
-    int maxDepth(TreeNode* root) {
-        if(root == NULL)return 0;
-        int ans = height(root);
-        return ans;
     }
 };
