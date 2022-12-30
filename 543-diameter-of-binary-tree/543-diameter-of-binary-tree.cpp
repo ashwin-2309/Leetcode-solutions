@@ -53,13 +53,23 @@ public:
     }
     
     //method 3 using a thing which stores max diameter
-    
+    int diameter2(TreeNode* node,int &mx)
+    {
+        if(node == NULL)return 0;
+        int ld = diameter2(node->left,mx);
+        int rd = diameter2(node->right,mx);
+        mx = max(mx,ld+rd);
+        return max(ld,rd)+1;
+    }
     
     int diameterOfBinaryTree(TreeNode* root) {
         if(root == NULL)return 0;
         // int ans = diameter0(root);
-        int ans = diameter1(root).first;
-        return ans-1;
+        // int ans = diameter1(root).first;
+        int mx = 0;
+        diameter2(root,mx);
+        return mx;
+        // return ans-1;
     }
 };
 
