@@ -37,6 +37,7 @@ public:
     //method 2 using pair and storing diameter in first and height in second
     pair<int,int> diameter1(TreeNode* node)
     {
+        if(node == NULL)return {0,0};
         pair<int,int> left = diameter1(node->left);
         pair<int,int> right = diameter1(node->right);
         
@@ -56,7 +57,8 @@ public:
     
     int diameterOfBinaryTree(TreeNode* root) {
         if(root == NULL)return 0;
-        int ans = diameter0(root);
+        // int ans = diameter0(root);
+        int ans = diameter1(root).first;
         return ans-1;
     }
 };
