@@ -55,11 +55,14 @@ public:
     //method 3 using a thing which stores max diameter
     int diameter2(TreeNode* node,int &mx)
     {
+        //this is height basically
+        //concept is that we are basically at every node calculating left height and right height and adding 1
+        //so the diameter passes through that node
         if(node == NULL)return 0;
-        int ld = diameter2(node->left,mx);
-        int rd = diameter2(node->right,mx);
-        mx = max(mx,ld+rd);
-        return max(ld,rd)+1;
+        int lh = diameter2(node->left,mx);
+        int rh = diameter2(node->right,mx);
+        mx = max(mx,lh+rh+1);
+        return max(lh,rh)+1;
     }
     
     int diameterOfBinaryTree(TreeNode* root) {
@@ -68,7 +71,7 @@ public:
         // int ans = diameter1(root).first;
         int mx = 0;
         diameter2(root,mx);
-        return mx;
+        return mx-1;
         // return ans-1;
     }
 };
