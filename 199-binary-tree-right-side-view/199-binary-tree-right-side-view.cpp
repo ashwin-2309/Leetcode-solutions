@@ -11,7 +11,8 @@
  */
 class Solution {
 public:
-    vector<int> rightSideView(TreeNode* root) {
+    vector<int> bfs(TreeNode* root)
+    {
         vector<int> ans;
         //we will use bfs technique and push the last node
         if(root == NULL)return ans;
@@ -32,5 +33,22 @@ public:
             
         }
         return ans;
+    }
+    void dfsHelper(TreeNode* node,int level,vector<int> &ans)
+    { 
+        if(node == NULL)return;
+        if(level == ans.size())ans.push_back(node->val);
+        dfsHelper(node->right,level+1,ans);
+        dfsHelper(node->left,level+1,ans);
+    }
+    vector<int> dfs(TreeNode* root)
+    {
+        vector<int> ans;
+        dfsHelper(root,0,ans);
+        return ans;
+    }
+    vector<int> rightSideView(TreeNode* root) {
+        //Can be done using both bfs and dfs
+        return dfs(root);
     }
 };
