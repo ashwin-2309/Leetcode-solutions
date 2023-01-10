@@ -1,48 +1,43 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        map<int,map<int,multiset<int>> > m;
-        // x , y , values in sorted order
-        queue<pair<TreeNode*,pair<int,int>>> q;
-        // Node , x, y
-         vector<vector<int>> ans;
-        if(root == NULL)return ans;
-        q.push({root,{0,0}});
-        while(!q.empty())
-        {
-            auto temp = q.front().first;
-            int x = q.front().second.first;
-            int y= q.front().second.second;
-            m[x][y].insert(temp->val);
-            q.pop();
-            if(temp->left)q.push({temp->left,{x-1,y+1}});
-            if(temp->right)q.push({temp->right,{x+1,y+1}});
+        // Map to store the x, y coordinates and the values of nodes 
+        map<int, map<int, multiset<int>>> coordinatesToValues;
+
+        // Queue to store current node, x, and y coordinates
+        queue<pair<TreeNode*, pair<int, int>>> bfsQueue;
+
+        // Vector to store final answer
+        vector<vector<int>> verticalOrder;
+
+        if (root == nullptr) return verticalOrder; // Empty case
+
+        bfsQueue.push({root, {0, 0}});
+
+        // Perform a breadth-first search
+        while (!bfsQueue.empty()) {
+            auto currentNode = bfsQueue.front().first;
+            int x = bfsQueue.front().second.first;
+            int y = bfsQueue.front().second.second;
+            // Insert current node value into the map 
+            coordinatesToValues[x][y].insert(currentNode->val);
+            bfsQueue.pop();
+
+            if (currentNode->left) bfsQueue.push({currentNode->left, {x - 1, y + 1}});
+            if (currentNode->right) bfsQueue.push({currentNode->right, {x + 1, y + 1}});
         }
-        for(auto i : m)
-        {
-            vector<int> col;
-            for(auto j : i.second)
-            {
-                auto k = j.second;
-                //k is multiset
-                for(auto l = k.begin();l!=k.end();l++)
-                {
-                    col.push_back(*l);
+        //Iterate over the map and add the values to the answer vector
+        for (auto &[x, columns]: coordinatesToValues) {
+            vector<int> columnValues;
+            for (auto &[y, values]: columns) {
+                // Add the values at this x, y coordinate to the answer vector
+                for (auto val: values) {
+                    columnValues.push_back(val);
                 }
             }
-            ans.push_back(col);
+            verticalOrder.push_back(columnValues);
         }
-        return ans;
+
+        return verticalOrder;
     }
 };
