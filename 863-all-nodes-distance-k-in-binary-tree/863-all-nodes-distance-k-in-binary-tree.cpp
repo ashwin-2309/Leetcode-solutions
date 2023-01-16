@@ -9,6 +9,7 @@
  */
 class Solution {
 public:
+    set<TreeNode*> s;
     void buildParent(TreeNode* root,TreeNode* target, unordered_map<TreeNode*,TreeNode*> &parent)
     {
         if(root == NULL)
@@ -21,12 +22,8 @@ public:
         buildParent(root->left,target,parent);
         buildParent(root->right,target,parent);
     }
-    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        //build the parent part
-         unordered_map<TreeNode*,TreeNode*> parent;
-         buildParent(root,target,parent);
-         parent[root] = NULL;
-        //now we will do bfs with vis array
+    vector<int> byBfs(TreeNode* target,int k, unordered_map<TreeNode*,TreeNode*> &parent)
+    {
         int vis[501] = {0};
         queue<TreeNode*> q; 
         q.push(target);
@@ -65,5 +62,36 @@ public:
             q.pop();
         }
         return ans;
+    }
+    void dfs(TreeNode* node,int k,vector<int> &res, unordered_map<TreeNode*,TreeNode*> &parent)
+    {
+        if(s.find(node) != s.end())return;
+        s.insert(node);
+        if(node == NULL)return;
+        if(k == 0)
+        {
+            res.push_back(node->val);
+            return;
+        }
+        if(node->left)
+        dfs(node->left,k-1,res,parent);
+        if(node->right)
+        dfs(node->right,k-1,res,parent);
+        if(parent[node])
+        dfs(parent[node],k-1,res,parent);
+            
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        //build the parent part
+         unordered_map<TreeNode*,TreeNode*> parent;
+         buildParent(root,target,parent);
+         parent[root] = NULL;
+        //now we will do bfs with vis array
+        vector<int> res;
+        // res = byBfs(target,k,parent);
+        dfs(target,k,res,parent);
+        
+        return res;
+        
     }
 };
