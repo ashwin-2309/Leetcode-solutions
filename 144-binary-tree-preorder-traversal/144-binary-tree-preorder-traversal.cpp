@@ -11,44 +11,40 @@
  */
 class Solution {
 public:
-    vector<int> morris(TreeNode* root)
-    {
-        vector<int> preorder;
-        TreeNode* node = root;
-        while(node != NULL)
-        {
-            if(node->left == NULL)
-            {
-                //push the value and go to the right
-                preorder.push_back(node->val);
-                node = node->right;
+   vector<int> morris(TreeNode* root) {
+    vector<int> preorder;
+    TreeNode* current = root; 
+
+    while (current != NULL) {
+        if (current->left == NULL) {
+            // If there's no left child, add the current node's value to the preorder vector and move to the right
+            preorder.push_back(current->val);
+            current = current->right;
+        } else {
+            // Find the inorder predecessor (rightmost node in left subtree)
+            TreeNode* inorder_predecessor = current->left;
+            while (inorder_predecessor->right != NULL && inorder_predecessor->right != current) {
+                inorder_predecessor = inorder_predecessor->right;
             }
-            else{
-                //we have to make the thread ie join the inorder predecessor to the node
-                TreeNode* prev = node->left;
-                while(prev->right != NULL and prev->right!= node)
-                {
-                    prev = prev->right;
-                }
-                
-                //case 1
-                if(prev->right == NULL)
-                {
-                    //making the thread
-                    prev->right = node;
-                    preorder.push_back(node->val);
-                    node=node->left;
-                }
-                else if(prev->right == node){
-                    //thread already made
-                    prev->right = NULL;
-                    
-                    node=node->right;
-                }
+
+            // If there's no thread between the inorder predecessor and the current node
+            if (inorder_predecessor->right == NULL) {
+                // Create a thread and add the current node's value to the preorder vector
+                inorder_predecessor->right = current;
+                preorder.push_back(current->val);
+                current = current->left;
+            }
+            // If there's already a thread between the inorder predecessor and the current node
+            else {
+                // Break the thread and move to the right
+                inorder_predecessor->right = NULL;
+                current = current->right;
             }
         }
-        return preorder;
     }
+    return preorder;
+}
+
     vector<int> iterative(TreeNode* root)
     {
         //iterative preorder
