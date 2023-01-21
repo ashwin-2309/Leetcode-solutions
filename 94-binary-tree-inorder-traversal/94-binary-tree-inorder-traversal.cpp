@@ -11,40 +11,41 @@
  */
 class Solution {
 public:
-    vector<int> inorderTraversal(TreeNode* root) {
-        // Create a stack to store the nodes that have not been visited yet
-        stack<TreeNode*> st;
-        // Set the current node to the root
-        TreeNode* node = root;
-        // Create a vector to store the inorder traversal
-        vector<int> ans;
-
-        // Keep iterating until we have visited all nodes
-        while(1) {
-            // If the current node is not null, push it onto the stack
-            // and set the current node to its left child
-            if(node != NULL) {
-                st.push(node);
-                node = node->left;
+    void morris(TreeNode* root,vector<int>&res)
+    {
+        TreeNode* cur = root;
+        while(cur){
+            if(cur->left == NULL)
+            {
+                res.push_back(cur->val);
+                cur = cur->right;
             }
-            // If the current node is null, it means we have reached the
-            // leftmost leaf of the tree.
-            else {
-                // If the stack is empty, we have finished traversing the tree
-                // and we can break out of the loop
-                if(st.empty() == true) {
-                    break;
+            else
+            {
+                TreeNode* prev = cur->left;
+                while(prev->right and prev->right != cur)
+                {
+                    prev = prev->right;
                 }
-                // Pop the top element off the stack and add its value to the result vector
-                node = st.top();
-                st.pop();
-                ans.push_back(node->val);
-                // Set the current node to the right child of the popped node
-                // and continue the process
-                node = node->right;
+                //case 1
+                if(prev->right == NULL)
+                {
+                    prev->right = cur;
+                    cur = cur->left;
+                }
+                else if(prev->right == cur)
+                {
+                    prev->right = NULL;
+                    //visited the root again
+                    res.push_back(cur->val);
+                    cur = cur->right;
+                }
             }
-        }
-        // Return the inorder traversal of the tree
-        return ans;
+        }        
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        morris(root,res);
+        return res;
     }
 };
