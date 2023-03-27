@@ -13,16 +13,22 @@ class Solution {
 public:
     int helper(TreeNode* node,int &mx)
     {
-        if(node == NULL)return 0;
+        if(!node){
+            return 0;
+        }
+//         if elements in left or right part are negative don't consider them
         int leftSum = max(0,helper(node->left,mx));
         int rightSum = max(0,helper(node->right,mx));
-        int sumThroughNode =leftSum+rightSum+node->val;
-        mx = max(mx,sumThroughNode);
-        return max(leftSum,rightSum)+node->val;
+        int maxSumAtThisRoot = leftSum+rightSum+node->val;
+        mx = max(mx,maxSumAtThisRoot);
+//         now we want to move up so along with root what should we include,left part or right part
+//         obviously that one that is maximum between them
+        int partToReturn = max(leftSum,rightSum)+node->val;
+        return partToReturn;
     }
     int maxPathSum(TreeNode* root) {
-        if(root == NULL)return 0;
-        int mx = INT_MIN;
+        if(!root)return 0;
+        int mx = root->val;
         int ans = helper(root,mx);
         return mx;
     }
