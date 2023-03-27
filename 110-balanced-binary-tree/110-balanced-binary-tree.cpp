@@ -11,19 +11,18 @@
  */
 class Solution {
 public:
-    int height(TreeNode* root)
-    {
-        if(root == NULL)return 0;
-        int lh = height(root->left);
+    int height(TreeNode* node){
+        if(!node)return 0;
+        int lh = height(node->left);
+//         this condition means that left side is not balanced
         if(lh == -1)return -1;
-        int rh = height(root->right);
+        int rh = height(node->right);
         if(rh == -1)return -1;
-        if(abs(lh-rh) > 1)return -1;
+        if(abs(rh-lh)>1)return -1;
         return 1+max(lh,rh);
     }
     bool isBalanced(TreeNode* root) {
-      int ans = height(root);
-        if(ans == -1)return false;
-        return true;
+        if(height(root) != -1)return true;
+        return false;
     }
 };
