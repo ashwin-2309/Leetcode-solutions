@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void help( vector<vector<int>> &ans,vector<int> &nums,vector<int> curr,int startIndex)
+    void help( vector<vector<int>> &ans,vector<int> &nums,vector<int> &curr,int startIndex)
     {
 //         base case when startIndex >= size of the nums array
         if(startIndex >= nums.size())
@@ -17,6 +17,8 @@ public:
         
         curr.push_back(nums[startIndex]);
         help(ans,nums,curr,startIndex+1);
+        
+        curr.pop_back();
     }
     vector<vector<int>> subsets(vector<int>& nums) {
 //         include exclude principle
