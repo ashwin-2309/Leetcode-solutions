@@ -5,7 +5,7 @@ public:
 //         base case when startIndex >= size of the nums array
         if(startIndex >= nums.size())
         {
-            ans.push_back(curr);
+            ans.emplace_back(curr);
             return;
         }
 //         include exclude
@@ -15,7 +15,7 @@ public:
 
         //         include
         
-        curr.push_back(nums[startIndex]);
+        curr.emplace_back(nums[startIndex]);
         help(ans,nums,curr,startIndex+1);
         
         curr.pop_back();
