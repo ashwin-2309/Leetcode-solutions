@@ -1,6 +1,8 @@
 class Solution {
 public:
-    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+//     vector method
+     vector<vector<int>> methodOne( vector<vector<int>> &intervals)
+     {
          vector<vector<int>> res;
         
          sort(intervals.begin(),intervals.end());
@@ -23,5 +25,38 @@ public:
          }
         return res;
         
+     }
+    
+     vector<vector<int>> methodTwo( vector<vector<int>> &intervals)
+     {
+         vector<vector<int>> res;
+         int n = intervals.size();
+         sort(intervals.begin(),intervals.end());
+         
+//          we will use stack here
+         stack<vector<int>> st;
+         st.push({intervals[0][0],intervals[0][1]});
+         
+         for(int i=1;i<n;i++){
+              if(st.top()[1] >= intervals[i][0])
+              {
+                  st.top()[1] = max(st.top()[1] , intervals[i][1]);
+              }
+             else{
+                 st.push({intervals[i]});
+             }
+         }
+         while(!st.empty())
+         {
+             res.push_back(st.top());
+             st.pop();
+         }
+         reverse(res.begin(),res.end());
+         
+         return res;
+     }
+    
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+         return methodTwo(intervals);
     }
 };
