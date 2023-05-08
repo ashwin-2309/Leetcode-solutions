@@ -1,24 +1,20 @@
 class Solution {
 public:
-    int tortoiseHare(vector<int> &a)
-    {
-        int slow = a[0],fast = a[a[0]];
-        while(slow != fast)
+    
+    int findDuplicate(vector<int>& a) {
+//         we need to return the element which is repeated
+        int fast = a[a[0]],slow = a[0];
+        while(fast != slow)
         {
-            slow = a[slow];
-            fast = a[a[fast]];
+            fast = a[a[fast]],slow = a[slow];
         }
-//         slow = fast
+        
+//         now they are same
         fast = 0;
-        while(slow != fast)
+        while(fast != slow)
         {
-            slow = a[slow];
-            fast = a[fast];
+            fast = a[fast],slow = a[slow];
         }
-        return fast;
-    }
-    int findDuplicate(vector<int>& nums) {
-//         tortoise hare algo
-        return tortoiseHare(nums);
+        return slow;
     }
 };
