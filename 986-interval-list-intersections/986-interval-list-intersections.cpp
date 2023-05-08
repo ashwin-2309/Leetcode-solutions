@@ -12,13 +12,9 @@ public:
             int newY = min(b,d);
             if(newY>=newX)
                 res.push_back({newX,newY});
+            
             if(b > d)j++;
-            else if(d>b){
-                i++;
-            }
-            else{
-                i++;j++;
-            }
+            else i++;
         }
         return res;
     }
