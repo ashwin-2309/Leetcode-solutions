@@ -1,33 +1,39 @@
 class Solution {
 public:
-    void nextPermutation(vector<int>& nums) {
-//         from scratch
-//         we have to find the last occurrence of a[i+1] > a[i]
-        int index = -1;
-        int n = nums.size();
+    void prevPermutation(vector<int> &a)
+    {
         
-//         check for the index
-        for(int i=0;i<n-1;i++){
-             if(nums[i] < nums[i+1])
-             {
-                 index = i;
-             }
+    }
+    void nextPermutation(vector<int>& a) {
+//         find the last point where a[i+1] > a[i]
+//         if there isn't then reverse the vector and return it
+//         else travel from the back and find a no. which is bigger than the current no.(first) and swap
+//         and reverse the swapped index+1,end part
+        
+        int n = a.size(); 
+        int index = -1;
+        for(int i=0;i<n-1;i++)
+        {
+            if(a[i+1] > a[i])index = i;
         }
+        
         if(index == -1)
         {
-//             the array is sorted in decreasing order
-            reverse(nums.begin(),nums.end());
+//             reverse the vector
+            reverse(a.begin(),a.end());
             return;
         }
         
-//         now that we have found the index,traverse the array from the back and find the no.which is bigger than the nums[index]
+//         now find the no. which is greater than this no. from the back
         for(int i=n-1;i>index;i--){
-            if(nums[i] > nums[index]){
-                swap(nums[i],nums[index]);
+            if(a[i] > a[index])
+            {
+                swap(a[i],a[index]);
                 break;
-            }  
+            }
         }
-//         now reverse the no. from index+1 to end
-        reverse(nums.begin()+index+1,nums.end());
+//         reverse the no.s left
+        
+        reverse(a.begin()+index+1,a.end());
     }
 };
