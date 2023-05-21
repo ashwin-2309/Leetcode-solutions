@@ -10,26 +10,50 @@
  */
 class Solution {
 public:
-    bool isPalindrome(ListNode* head) {
-        // Approach: Store elements in a stack and compare with the linked list elements
-        stack<int> st;
-        ListNode* p = head;
-        ListNode* q = head;
+    
+    ListNode* middleOfList(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
         
-        // Store elements in the stack
-        while (p) {
-            st.push(p->val);
-            p = p->next;
+        while (fast != nullptr && fast->next != nullptr and fast->next->next) {
+            slow = slow->next;
+            fast = fast->next->next;
         }
         
-        // Compare linked list elements with stack elements
-        while (!st.empty()) {
-            if (q->val == st.top()) {
-                q = q->next;
-                st.pop();
-            } else {
+        return slow;
+    }
+    
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev = nullptr;
+        ListNode* curr = head;
+        
+        while (curr != nullptr) {
+            ListNode* nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+        
+        return prev;
+    }
+    
+    bool isPalindrome(ListNode* head) {
+        if (head == nullptr || head->next == nullptr)
+            return true;
+        
+        ListNode* middleNode = middleOfList(head);
+        ListNode* rightHead = reverseList(middleNode->next);
+        middleNode->next = rightHead;
+        
+        ListNode* leftPtr = head;
+        ListNode* rightPtr = rightHead;
+        
+        while (rightPtr != nullptr) {
+            if (leftPtr->val != rightPtr->val)
                 return false;
-            }
+            
+            leftPtr = leftPtr->next;
+            rightPtr = rightPtr->next;
         }
         
         return true;
