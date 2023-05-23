@@ -40,7 +40,57 @@ public:
         auto newHead = m[head];
         return newHead;
     }
+    
+    Node* optimal(Node* head)
+    {
+//         we will do it without any mapping or extra space
+        auto iter = head;
+        auto front = head;
+        
+//         insert copy between the original nodes
+        
+        while(iter != NULL)
+        {
+            front = iter->next;
+            auto copy = new Node(iter->val);
+            iter->next = copy;
+            copy->next = front;
+            iter = front;
+        }
+        
+// populate random pointers in the copy nodes
+        iter = head;
+        while (iter != NULL) {
+            if (iter->random != NULL) {
+              iter->next->random = iter->random->next;
+            }
+            iter = iter->next->next;
+          }
+//         now get the copy linked list out of there
+          iter = head;
+        
+          Node *pseudoHead = new Node(0);
+          Node *copy = pseudoHead;
+
+          while (iter != NULL) {
+//           Node which is in original linked list
+            front = iter->next->next;
+
+            // extract the copy
+            copy->next = iter->next;
+
+            // restore the original list
+            iter->next = front;
+              
+            copy = copy -> next; 
+            iter = front;
+          }
+        return pseudoHead->next;
+        
+    }
+    
     Node* copyRandomList(Node* head) {
-        return bruteForce(head);
+        // return bruteForce(head);
+        return optimal(head);
     }
 };
