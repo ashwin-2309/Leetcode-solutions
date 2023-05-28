@@ -1,62 +1,22 @@
 class Solution {
 public:
-//     vector method
-     vector<vector<int>> methodOne( vector<vector<int>> &intervals)
-     {
-         vector<vector<int>> res;
-        
-         sort(intervals.begin(),intervals.end());
-        
-         res.push_back(intervals[0]);;
-        
-         int n = intervals.size();
-        
-         for(int i=1 ;i < n;i++)
-         {
-// check the back element in res and if its 2nd element is greater than the first element of intervals then merge
-             
-             int back = res.back()[1];
-             if(back >= intervals[i][0]){
-                 res.back()[1] = max(res.back()[1],intervals[i][1]);
-             }
-             else{
-                 res.push_back(intervals[i]);
-             }
-         }
-        return res;
-        
-     }
-    
-     vector<vector<int>> methodTwo( vector<vector<int>> &intervals)
-     {
-         vector<vector<int>> res;
-         int n = intervals.size();
-         sort(intervals.begin(),intervals.end());
-         
-//          we will use stack here
-         stack<vector<int>> st;
-         st.push({intervals[0][0],intervals[0][1]});
-         
-         for(int i=1;i<n;i++){
-              if(st.top()[1] >= intervals[i][0])
-              {
-                  st.top()[1] = max(st.top()[1] , intervals[i][1]);
-              }
-             else{
-                 st.push({intervals[i]});
-             }
-         }
-         while(!st.empty())
-         {
-             res.push_back(st.top());
-             st.pop();
-         }
-         reverse(res.begin(),res.end());
-         
-         return res;
-     }
-    
-    vector<vector<int>> merge(vector<vector<int>>& intervals) {
-         return methodTwo(intervals);
+    vector<vector<int>> merge(vector<vector<int>>& a) {
+        sort(a.begin(),a.end());
+         vector<vector<int>> ans;
+        ans.push_back(a[0]);
+        for(int i=1;i<a.size();i++)
+        {
+            int lastStart = ans.back()[0],lastEnd = ans.back()[1];
+            int currStart = a[i][0],currEnd = a[i][1];
+            
+            if(lastEnd >= currStart)
+            {
+                ans.back()[1] = max(lastEnd,currEnd);
+            }
+            else{
+                ans.push_back(a[i]);
+            }
+        }
+        return ans;
     }
 };
