@@ -14,6 +14,18 @@ public:
         int right = helper(n-2,dp);
         return dp[n] = left + right;
     }
+    int optimal(int n)
+    {
+        int prev1=1;
+        int prev2=1;
+        for(int i=2;i<=n;i++)
+        {
+            int curr = prev1+prev2;
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
+    }
     int tabulation(int n)
     {
         vector<int> dp(n+1,-1);
@@ -28,6 +40,7 @@ public:
     int climbStairs(int n) {
         vector<int> dp(n+1,-1);
         // return helper(n,dp);
-        return tabulation(n);
+        // return tabulation(n);
+        return optimal(n);
     }
 };
