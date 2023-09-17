@@ -156,10 +156,10 @@ class Solution {
                     flag=true;
                 }
             }
-            if(flag == true)
+            // if(flag == true)
                 time++;
         }
-        return time;
+        return time-1;
         
     }
 };
